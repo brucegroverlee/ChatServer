@@ -9,20 +9,37 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.static('public'))
 
+var users = [
+  {username: 'goku', password: '1234'},
+  {username: 'vegeta', password: '1234'},
+  {username: 'gohan', password: '1234'},
+  {username: 'krilin', password: '1234'}
+]
+
 app.get('/get', function (request, response) {
   response.send('Hi')
-  console.log('get a request!')
+  console.log('request a get!')
 })
 
 app.post('/login', function (request, response) {
-  console.log('post a request!')
-  var username = request.body.name
+  console.log('request a post!')
+  var username = request.body.username
   var password = request.body.password
   console.log('username: ' + username)
   console.log('password: ' + password)
+
+  var status = 'Error'
+
+  for ( var i = 0 ; i < 4 ; i++ ) {
+    var user = users[i]
+    if (user.username === username && user.password === password) {
+      status = 'Ok'
+    }
+  }
+
   response.json({
-    status: 'ok',
-    user: username
+    status: status,
+    username: username
   })
 })
 
